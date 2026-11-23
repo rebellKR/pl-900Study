@@ -216,6 +216,9 @@ textarea{width:100%;min-height:90px;background:var(--bg);border:1px solid var(--
 .flip.on .back{transform:none}
 .card-count{text-align:center;color:var(--muted);font-size:.8rem;margin:10px 0 0;font-variant-numeric:tabular-nums}
 @media (prefers-reduced-motion:reduce){.choice.pop,.choice.shake,.toast{animation:none}.tick{animation:none;stroke-dashoffset:0}.face{transition:none}}
+/* 스와이프 안내 화살표 */
+.swipe-tip{position:fixed;z-index:25;width:48px;height:48px;border-radius:50%;background:var(--surface);border:1px solid var(--line);color:var(--muted);display:grid;place-items:center;font-size:1.6rem;opacity:0;pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.15);transition:background .15s,color .15s}
+.swipe-tip.ready{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
 /* 하단 탭바 */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
 nav.tabs button{background:none;border:none;display:grid;justify-items:center;gap:2px;padding:6px 0;font-size:.72rem;color:var(--muted);border-radius:10px}
@@ -1083,6 +1086,7 @@ function drawCard(){
   :`<div class="score"><b>✓</b><p>この範囲の用語はすべて覚えました。</p></div>
   <div class="actions"><button class="btn" id="resetk">覚えた記録をリセット</button></div>`}`;
   $("#back").onclick=()=>go("study");
+  nav={back:()=>go("study")};
   document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>cards(+b.dataset.f));
   if(!t){$("#resetk").onclick=()=>{all.forEach(x=>delete S.known[x[1]]);save();cards(dom)};return}
   const flip=$("#flip"), turn=()=>flip.classList.toggle("on");
@@ -1093,7 +1097,7 @@ function drawCard(){
 
 // ===== 탭 전환 =====
 let tab="study", run=null;
-function go(t){tab=t;run=null;$("#tabs").hidden=false;$("#app").classList.remove("wide");
+function go(t){nav={};tab=t;run=null;$("#tabs").hidden=false;$("#app").classList.remove("wide");
   document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));
   ({study:studyHome,quiz:quizHome,set:settings})[t]();window.scrollTo(0,0)}
 document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>go(b.dataset.tab));
@@ -1186,6 +1190,7 @@ function studyUnit(d,i){
     S.read["u"+u.id]=1; save();
     if(last){tab="study";$("#app").classList.remove("wide");start(shuffle(Q.filter(q=>q.d===d)),dom.name)} else studyUnit(d,i+1);
   };
+  nav={back:()=>go("study"),next:last?null:()=>studyUnit(d,i+1)};
   window.scrollTo(0,0);
 }
 
@@ -1228,7 +1233,7 @@ function quizHome(){
 }
 
 // ===== 퀴즈 진행 =====
-function start(list,title){$("#app").classList.remove("wide");run={list,title,i:0,ok:0,wrong:[],combo:0,best:0};$("#tabs").hidden=true;show()}
+function start(list,title){nav={};$("#app").classList.remove("wide");run={list,title,i:0,ok:0,wrong:[],combo:0,best:0};$("#tabs").hidden=true;show()}
 function show(){
   const q=run.list[run.i], d=DOMAINS[q.d-1];
   // 선택지 순서 섞기 (설정에서 끌 수 있음)
@@ -1366,6 +1371,37 @@ function settings(){
     $("#yes").onclick=()=>{S=merge({set:S.set});save();settings()};
   };
 }
+
+// ===== 스와이프 제스처 =====
+// 손가락을 왼쪽→오른쪽으로 밀면 뒤로, 단원 화면에서 오른쪽→왼쪽으로 밀면 다음 단원
+// (문제 풀이 중에는 실수로 나가지 않도록 끔)
+let nav={};
+(function(){
+  let x0=0,y0=0,on=false,dir=0;
+  const tip=document.createElement("div");tip.className="swipe-tip";document.body.appendChild(tip);
+  const reset=()=>{tip.style.opacity=0;tip.classList.remove("ready");on=false};
+  addEventListener("touchstart",e=>{
+    if(e.touches.length!==1||(!nav.back&&!nav.next))return;
+    if(e.target.closest(".tbl,.side.open,textarea,input"))return; // 가로 스크롤 표 등은 제외
+    x0=e.touches[0].clientX;y0=e.touches[0].clientY;on=true;dir=0;
+  },{passive:true});
+  addEventListener("touchmove",e=>{
+    if(!on)return;
+    const dx=e.touches[0].clientX-x0, dy=e.touches[0].clientY-y0;
+    if(!dir){if(Math.abs(dy)>Math.abs(dx)&&Math.abs(dy)>10){on=false;return} if(Math.abs(dx)>10)dir=dx>0?1:-1}
+    if(dir===1&&!nav.back||dir===-1&&!nav.next){on=false;return}
+    const p=Math.min(1,Math.abs(dx)/90);
+    tip.textContent=dir===1?"‹":"›";tip.style.left=dir===1?"8px":"auto";tip.style.right=dir===1?"auto":"8px";
+    tip.style.top=(y0-24)+"px";tip.style.opacity=p;tip.classList.toggle("ready",p>=1);
+  },{passive:true});
+  addEventListener("touchend",e=>{
+    if(!on)return;
+    const dx=e.changedTouches[0].clientX-x0, dy=e.changedTouches[0].clientY-y0;reset();
+    if(Math.abs(dx)<90||Math.abs(dy)>Math.abs(dx)*0.6)return; // 충분히 옆으로 밀었을 때만
+    if(dx>0&&nav.back){buzz(10);nav.back()} else if(dx<0&&nav.next){buzz(10);nav.next()}
+  });
+  addEventListener("touchcancel",reset);
+})();
 
 applySettings();
 go("study");
