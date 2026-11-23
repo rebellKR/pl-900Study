@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px)}</style>
+<title>PL-900 ドリル</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="PL-900 (Power Platform Fundamentals) 日本語学習ドリル">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<style>
+/* 레이아웃: 1단 스마트폰 앱형. 위 고정 헤더 + 아래 고정 탭바(学習・問題・設定) */
+:root{
+  --bg:#f5f6fa; --surface:#ffffff; --fg:#1b1f2e; --muted:#5d6478; --line:#dfe2ec;
+  --accent:#5b3fd1; --accent-soft:#ece8fd; --on-accent:#ffffff; --ok:#0f8a5f; --ok-soft:#e2f5ec; --ng:#c8364a; --ng-soft:#fce8eb; --warn:#a86a00; --warn-soft:#fdf3e1;
+  --f-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
+  --f-body:"Noto Sans JP","Hiragino Sans","Yu Gothic",Meiryo,sans-serif;
+  --fs:16px; /* 설정에서 바꾸는 글자 크기 */
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12141c; --surface:#1c1f2b; --fg:#e9ebf3; --muted:#a2a8ba; --line:#2e3242;
+  --accent:#a593ff; --accent-soft:#2a2550; --on-accent:#14112b; --ok:#4fd1a0; --ok-soft:#163a2e; --ng:#ff8091; --ng-soft:#40202a; --warn:#f0b54a; --warn-soft:#3a2d14; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12141c; --surface:#1c1f2b; --fg:#e9ebf3; --muted:#a2a8ba; --line:#2e3242;
+  --accent:#a593ff; --accent-soft:#2a2550; --on-accent:#14112b; --ok:#4fd1a0; --ok-soft:#163a2e; --ng:#ff8091; --ng-soft:#40202a; --warn:#f0b54a; --warn-soft:#3a2d14; color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:var(--fs);line-height:1.75;-webkit-text-size-adjust:100%}
+.wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 calc(96px + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;align-items:center;gap:12px;padding-block:12px;border-bottom:1px solid var(--line)}
+header.top h1{font-family:var(--f-display);font-size:1.15rem;margin:0;letter-spacing:.02em;flex:1;min-width:0}
+header.top h1 small{display:block;font-family:var(--f-body);font-weight:400;font-size:.72rem;color:var(--muted);letter-spacing:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.icon-btn{background:none;border:1px solid var(--line);border-radius:10px;padding:6px 12px;font-size:.85rem;color:var(--muted);white-space:nowrap}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h2{font-family:var(--f-display);font-size:1.05rem;margin:28px 0 10px;text-wrap:balance}
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+.stat b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums;line-height:1.3}
+.stat span{font-size:.75rem;color:var(--muted)}
+.modes,.domains,.list{display:grid;gap:8px}
+.btn{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;border-radius:14px;padding:14px 16px;font-weight:700;text-align:left;background:var(--surface);border:1px solid var(--line)}
+.btn.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.btn small{font-weight:400;font-size:.8rem;opacity:.85}
+.btn[disabled]{opacity:.45;cursor:default}
+.domain{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:6px}
+.domain .row{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.domain .name{font-weight:700;font-size:.95rem;min-width:0}
+.domain .w{font-size:.75rem;color:var(--muted);white-space:nowrap}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ok);border-radius:3px}
+.bar.acc i{background:var(--accent)}
+.domain .meta{font-size:.75rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.note{font-size:.8rem;color:var(--muted);margin-top:24px}
+.note a,.link{color:var(--accent)}
+/* 오늘의 학습 카드 */
+.today{margin-top:16px;background:var(--accent-soft);border-radius:16px;padding:14px 16px;display:grid;gap:8px}
+.today .row{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.85rem}
+.today b{font-variant-numeric:tabular-nums}
+.today .big{font-family:var(--f-display);font-size:1.1rem}
+.chip{display:inline-block;background:var(--surface);border-radius:99px;padding:2px 10px;font-size:.78rem;font-weight:700}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+/* 학습(요약) 화면 */
+.sec{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:12px}
+.sec h3{font-family:var(--f-display);font-size:1.02rem;margin:0 0 8px;display:flex;gap:8px;align-items:baseline}
+.sec h3 .done{font-family:var(--f-body);font-size:.72rem;color:var(--ok);font-weight:700;margin-left:auto;white-space:nowrap}
+.sec ul{margin:0;padding-left:1.2em}
+.sec li{margin-bottom:4px}
+.terms{display:grid;gap:6px;margin-top:12px}
+.terms div{display:grid;grid-template-columns:minmax(6.5em,auto) 1fr;gap:10px;font-size:.9rem;border-top:1px solid var(--line);padding-top:6px}
+.terms dt{font-weight:700;color:var(--accent)}
+.terms dd{margin:0;min-width:0}
+.tip{margin-top:12px;background:var(--warn-soft);border-radius:10px;padding:10px 12px;font-size:.9rem}
+.tip b{color:var(--warn)}
+.readbtn{margin-top:12px;padding:10px 14px;font-size:.9rem;justify-content:center}
+.readbtn.on{color:var(--ok);border-color:var(--ok)}
+/* 퀴즈 화면 */
+.qhead{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:.8rem;color:var(--muted)}
+.qhead .tag{background:var(--accent-soft);color:var(--accent);padding:2px 10px;border-radius:99px;font-weight:700;white-space:nowrap}
+.qhead .count{margin-left:auto;font-variant-numeric:tabular-nums;white-space:nowrap}
+.qbar{height:4px;background:var(--line);border-radius:2px;margin-top:8px;overflow:hidden}
+.qbar i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.question{font-size:1.08em;font-weight:700;margin:18px 0 14px;line-height:1.8}
+.choices{display:grid;gap:10px}
+.choice{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:12px 14px;line-height:1.6}
+.choice .k{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--muted);display:grid;place-items:center;font-size:.8rem;font-weight:700;color:var(--muted)}
+.choice.ok{border-color:var(--ok);background:var(--ok-soft)}
+.choice.ok .k{background:var(--ok);border-color:var(--ok);color:var(--surface)}
+.choice.ng{border-color:var(--ng);background:var(--ng-soft)}
+.choice.ng .k{background:var(--ng);border-color:var(--ng);color:var(--surface)}
+.choice[disabled]{cursor:default}
+.verdict{margin-top:18px;font-family:var(--f-display);font-size:1.2rem}
+.verdict.ok{color:var(--ok)} .verdict.ng{color:var(--ng)}
+.exp{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:10px}
+.exp h3{font-size:.8rem;letter-spacing:.08em;color:var(--muted);margin:0 0 4px}
+.exp p{margin:0 0 12px}
+.exp p:last-child{margin-bottom:0}
+.exp .plus{border-top:1px dashed var(--line);padding-top:12px}
+.exp .plus h3{color:var(--warn)}
+.exp a{color:var(--accent);font-size:.85rem}
+.actions{display:flex;gap:8px;margin-top:16px}
+.actions .btn{justify-content:center}
+.mark{flex:0 0 auto;width:auto}
+.mark.on{color:var(--warn);border-color:var(--warn)}
+.score{text-align:center;margin-top:32px}
+.score b{font-family:var(--f-display);font-size:3rem;font-variant-numeric:tabular-nums;color:var(--accent)}
+.score p{margin:0;color:var(--muted)}
+.review{display:grid;gap:8px}
+.review div{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--ng);border-radius:10px;padding:10px 12px;font-size:.9rem}
+.review div small{display:block;color:var(--ok);margin-top:4px}
+.confirm{background:var(--ng-soft);border:1px solid var(--ng);border-radius:12px;padding:12px;margin-top:12px;font-size:.9rem}
+.confirm .actions{margin-top:10px}
+/* 설정 화면 */
+.profile{margin-top:16px;display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.avatar{flex:none;width:52px;height:52px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-family:var(--f-display);font-size:1.1rem}
+.profile b{font-size:1.15rem;display:block}
+.profile span{font-size:.8rem;color:var(--muted)}
+.group{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-top:1px solid var(--line);flex-wrap:wrap}
+.item:first-child{border-top:none}
+.item label,.item .lbl{font-weight:500;min-width:0}
+.item .lbl small,.item label small{display:block;font-size:.75rem;color:var(--muted);font-weight:400}
+.seg{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:2px}
+.seg button{border:none;background:none;padding:6px 12px;border-radius:8px;font-size:.85rem;color:var(--muted)}
+.seg button.on{background:var(--accent);color:var(--on-accent);font-weight:700}
+.switch{appearance:none;width:46px;height:28px;border-radius:99px;background:var(--line);position:relative;cursor:pointer;flex:none;margin:0}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--surface);transition:left .2s}
+.switch:checked{background:var(--ok)}
+.switch:checked::after{left:21px}
+.item input[type=date]{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+textarea{width:100%;min-height:90px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px;font-size:.75rem;font-family:ui-monospace,Menlo,monospace}
+.msg{font-size:.8rem;color:var(--ok);min-height:1.2em}
+/* 하단 탭바 */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
+nav.tabs button{background:none;border:none;display:grid;justify-items:center;gap:2px;padding:6px 0;font-size:.72rem;color:var(--muted);border-radius:10px}
+nav.tabs button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav.tabs button.on{color:var(--accent);font-weight:700}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<div class="wrap" id="app"></div>
+<nav class="tabs" id="tabs">
+  <button data-tab="study"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/></svg>学習</button>
+  <button data-tab="quiz"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>問題</button>
+  <button data-tab="set"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>設定</button>
+</nav>
+
+<script>
+// ===== 出題範囲(2026年7月24日改訂の公式スキル アウトラインに準拠) =====
+const DOMAINS = [
+  {id:1, name:"Power Platform のビジネス価値", w:"5–10%", learn:"https://learn.microsoft.com/ja-jp/training/paths/introduction-power-platform/"},
+  {id:2, name:"Power Platform 環境の管理(Dataverse・ガバナンス)", w:"20–25%", learn:"https://learn.microsoft.com/ja-jp/training/modules/introduction-common-data-service/"},
+  {id:3, name:"Power Apps の機能", w:"20–25%", learn:"https://learn.microsoft.com/ja-jp/training/paths/create-powerapps/"},
+  {id:4, name:"Power Automate の機能", w:"20–25%", learn:"https://learn.microsoft.com/ja-jp/training/paths/automate-process-using-flow/"},
+  {id:5, name:"Copilot Studio のエージェント", w:"20–25%", learn:"https://learn.microsoft.com/ja-jp/microsoft-copilot-studio/"}
+];
+
+// ===== 問題データ =====
+// d=分野, q=問題文, c=選択肢, a=正解の番号(0始まり), e=解説, n=補足
+const Q = [
+// --- 分野1 ビジネス価値 ---
+{d:1,q:"Power Platform が「ローコード」と呼ばれる主な理由として、最も適切なものはどれですか。",c:["専門的なプログラミング知識がなくても、画面操作や簡単な数式で業務アプリや自動化を作れるから","すべての機能が無料で使えるから","オンプレミスのサーバーにのみインストールして使うから","コードを書くことが一切禁止されているから"],a:0,e:"ローコードとは、ドラッグ＆ドロップや Excel のような数式を使って、少ないコードでアプリやフローを作れることを指します。現場の業務担当者(市民開発者)が自分で課題を解決できる点が大きな価値です。",n:"プロの開発者がコードで機能を拡張することも可能です。「コード禁止」ではなく「少ないコードでも作れる」という点がポイントです。"},
+{d:1,q:"Power Apps、Power Automate、Copilot Studio が共通して利用できる、安全でスケーラブルなデータ保存基盤はどれですか。",c:["Microsoft Dataverse","Microsoft Excel","OneNote","Azure DevOps"],a:0,e:"Microsoft Dataverse は Power Platform の標準データ基盤です。テーブル形式でデータを保存し、セキュリティやビジネス ロジックが組み込まれています。",n:"Excel や SharePoint もデータソースとして使えますが、「Power Platform 共通の基盤」として問われたら Dataverse を選びましょう。"},
+{d:1,q:"Power Platform における「コネクタ」の役割はどれですか。",c:["外部のサービスやデータソースと Power Platform をつなぐ橋渡しをする","アプリの画面デザインを自動で整える","ユーザーのライセンスを自動で割り当てる","データベースのバックアップを取る"],a:0,e:"コネクタは、Outlook、SharePoint、Salesforce など様々なサービスの API を包んだ「接続部品」です。アプリやフローから簡単に外部データを読み書きできます。",n:"コネクタには「標準」と「プレミアム」があり、プレミアム コネクタは追加ライセンスが必要です。用意されていないサービスには「カスタム コネクタ」を自作できます。"},
+{d:1,q:"毎日届く請求書メールの添付ファイルを SharePoint に保存し、担当者に通知する作業を自動化したい。最適な製品はどれですか。",c:["Power Automate","Power Apps","Power Pages","Microsoft Forms"],a:0,e:"繰り返し発生する手作業の流れ(ワークフロー)を自動化するのは Power Automate の役割です。「メールを受信したとき」をきっかけに、保存や通知を自動で実行できます。",n:"「アプリを作る」なら Power Apps、「作業を自動化する」なら Power Automate、「会話するエージェント」なら Copilot Studio、と目的で覚えるのがコツです。"},
+{d:1,q:"社外の顧客がサインインして申請状況を確認できる、ローコードの Web サイトを作りたい。適切な製品はどれですか。",c:["Power Pages","Power Automate デスクトップ","Microsoft Teams","モデル駆動型アプリ"],a:0,e:"Power Pages は、外部ユーザー向けのセキュアなビジネス Web サイトをローコードで作成するサービスです。Dataverse のデータを社外の人に安全に見せることができます。",n:"2026年7月の改訂で Power Pages 単独の分野はなくなりましたが、「ビジネス価値」の分野には引き続き含まれています。"},
+{d:1,q:"自然言語で社員からの質問に答えたり、業務を代行したりする「エージェント」を作成できる製品はどれですか。",c:["Microsoft Copilot Studio","Power BI","Power Pages","Dataverse"],a:0,e:"Copilot Studio は、会話型の AI エージェントをローコードで作成・公開できるツールです。ナレッジ(社内文書など)を参照して回答したり、ツールを呼び出して処理を実行したりできます。",n:"以前は Power Virtual Agents という名前でした。古い教材ではこの名前で説明されていることがあります。"},
+{d:1,q:"Power Platform の生成 AI(Copilot)機能がもたらす価値として、最も適切なものはどれですか。",c:["作りたいものを自然言語で説明すると、アプリ・フロー・テーブルなどの下書きを自動生成できる","人間による確認なしに本番環境へ自動公開される","ライセンス費用が不要になる","インターネット接続なしで動作する"],a:0,e:"Copilot に「出張申請を管理するアプリを作って」のように話しかけると、必要なテーブルや画面、フローの下書きが作られます。作成のスピードが大幅に上がるのが価値です。",n:"AI が作ったものはあくまで下書きです。内容を確認・修正してから使うのが基本です。"},
+{d:1,q:"業務部門の市民開発者と IT 部門のプロ開発者が協力してソリューションを作るチームを何と呼びますか。",c:["フュージョン チーム","セキュリティ グループ","業務単位","テナント"],a:0,e:"フュージョン チームは、業務を知る人とテクノロジーに詳しい人が組んで、素早くソリューションを作る協働の形です。Power Platform はこの働き方を支えます。",n:"「業務単位」は Dataverse のセキュリティ用語、「テナント」は組織全体の契約単位なので混同しないようにしましょう。"},
+// --- 分野2 環境の管理 ---
+{d:2,q:"Dataverse でデータを保存する基本単位で、Excel のシートのように行と列を持つものはどれですか。",c:["テーブル","フォーム","ビュー","ソリューション"],a:0,e:"Dataverse のデータはテーブルに保存されます。行が 1 件のデータ(レコード)、列が項目(名前、日付など)です。",n:"古い教材では「エンティティ(テーブル)」「フィールド(列)」と呼ばれています。新旧の名前を両方知っておくと安心です。"},
+{d:2,q:"1 つの「取引先企業」に複数の「取引先担当者」が所属する関係は、どの種類のリレーションシップですか。",c:["1 対多 (1:N)","多対多 (N:N)","1 対 1","自己参照のみ"],a:0,e:"1 社に対して担当者が複数いるので「1 対多」です。担当者側のテーブルに、どの企業に属するかを示す検索(ルックアップ)列ができます。",n:"「学生」と「授業」のように、お互いに複数ずつ関係する場合は「多対多」です。"},
+{d:2,q:"Dataverse の「選択肢」型の列が適しているのはどんな場合ですか。",c:["「高・中・低」のように、決められた候補から値を選ばせたいとき","長い文章を自由に入力させたいとき","画像ファイルを保存したいとき","他のテーブルの行を参照したいとき"],a:0,e:"選択肢(Choice)列は、あらかじめ決めた候補の中から選ばせる列です。入力ミスを防ぎ、集計もしやすくなります。",n:"他テーブルの行を参照するのは「検索(ルックアップ)」列です。"},
+{d:2,q:"Dataverse で、複数のレコードを一覧形式で表示するものはどれですか。",c:["ビュー","フォーム","ビジネス ルール","グラフ"],a:0,e:"ビューは、条件で絞り込んだ複数のレコードを一覧表示するものです(例: 「アクティブな取引先企業」)。",n:"1 件のレコードを表示・編集する画面は「フォーム」です。「一覧=ビュー、1 件=フォーム」と覚えましょう。"},
+{d:2,q:"コードを書かずに「状態が『完了』のときは完了日を必須にする」といったロジックをテーブルに設定したい。何を使いますか。",c:["ビジネス ルール","セキュリティ ロール","DLP ポリシー","環境変数"],a:0,e:"ビジネス ルールを使うと、条件に応じて列を必須にしたり、値を設定したり、エラーを表示したりするロジックをノーコードで作れます。",n:"ビジネス ロジックには他にも Power Fx による数式列や、Power Automate のフローなどがあります。"},
+{d:2,q:"Power Fx の説明として正しいものはどれですか。",c:["Excel の数式に似た、Power Platform 共通のローコード言語","Dataverse のバックアップ形式","Power BI 専用のグラフ種類","管理者専用のコマンドライン ツール"],a:0,e:"Power Fx は Excel の関数に近い書き方ができるローコード言語です。キャンバス アプリの数式や Dataverse の数式列などで使われます。",n:"例: If(Value > 100, \"大\", \"小\") のように、Excel を使ったことがある人ならすぐに読めます。"},
+{d:2,q:"開発中のアプリが本番業務に影響しないように、開発・テスト・本番を分けたい。何を使って分けますか。",c:["環境","テーブル","ギャラリー","トピック"],a:0,e:"環境は、アプリ・フロー・データなどを入れておく「箱」です。開発用・テスト用・本番用と分けることで、安全に開発できます。",n:"環境は Power Platform 管理センターで作成・管理します。各環境には最大 1 つの Dataverse データベースを持てます。"},
+{d:2,q:"Dataverse で「営業担当者は自分のレコードのみ編集でき、マネージャーは部署全体を見られる」といった権限を設定するものはどれですか。",c:["セキュリティ ロール","ビュー","コネクタ","ソリューション"],a:0,e:"セキュリティ ロールは、テーブルごとに「作成・読み取り・書き込み・削除」などの権限と、その範囲(自分・業務単位・組織など)を定義します。",n:"Dataverse のセキュリティは「業務単位」「セキュリティ ロール」「チーム」などを組み合わせて設計します。"},
+{d:2,q:"社内データが個人用の SNS などに送られるのを防ぐため、使えるコネクタの組み合わせを制限したい。何を設定しますか。",c:["データ損失防止 (DLP) ポリシー","ビジネス ルール","キャンバス アプリのテーマ","ナレッジ ソース"],a:0,e:"DLP ポリシーは、コネクタを「ビジネス」「非ビジネス」「ブロック」に分類します。ビジネスと非ビジネスのコネクタを同じアプリやフローで一緒に使えないようにして、データ漏えいを防ぎます。",n:"DLP ポリシーは管理者が Power Platform 管理センターで設定します。環境単位でもテナント全体でも適用できます。"},
+{d:2,q:"開発環境で作ったソリューションを、テスト環境、本番環境へと簡単に移動(デプロイ)できる機能はどれですか。",c:["Power Platform のパイプライン","DLP ポリシー","Copilot Studio のチャネル","モデル駆動型アプリのサイトマップ"],a:0,e:"パイプラインは ALM(アプリケーション ライフサイクル管理)を簡単にする機能で、ソリューションを決まった順番で環境間に展開できます。",n:"移動の単位は「ソリューション」です。アプリやフロー、テーブルをソリューションにまとめておくことが前提になります。"},
+{d:2,q:"従来の一般的なデータベースと比べた Dataverse の特徴として、正しいものはどれですか。",c:["セキュリティ、ビジネス ロジック、Microsoft 365 などとの統合が最初から組み込まれている","SQL を書かないとテーブルを作れない","1 つのテーブルに 10 行までしか保存できない","Power Platform からは接続できない"],a:0,e:"Dataverse は単なる保存場所ではなく、権限管理、監査、ビジネス ルール、標準テーブルなどがあらかじめ用意されているため、すぐに業務で使えるのが強みです。",n:"「取引先企業」「取引先担当者」などの標準テーブルが最初から入っています(Common Data Model)。"},
+{d:2,q:"環境の利用状況やアプリの使用回数などを管理者が確認できる場所はどれですか。",c:["Power Platform 管理センターの分析(モニター)機能","Power Apps Studio のツリー ビュー","Outlook の受信トレイ","Copilot Studio のトピック一覧"],a:0,e:"Power Platform 管理センターでは、環境の管理に加え、容量・利用状況・アクティブ ユーザー数などの分析レポートを確認できます。",n:"ガバナンス強化には「CoE スターター キット」というツール集もあります。"},
+{d:2,q:"Copilot を使った Dataverse のテーブル作成について、正しいものはどれですか。",c:["「社員の研修記録を管理したい」など自然言語で説明すると、テーブル・列・リレーションシップの案を作ってくれる","AI が作ったテーブルは編集できない","Excel ファイルがないと使えない","管理者しか利用できない"],a:0,e:"Copilot に作りたいデータを説明すると、必要なテーブルや列、テーブル同士の関係を提案してくれます。提案は自由に編集してから保存できます。",n:"既存の Excel や CSV ファイルを読み込ませて、テーブルを作ることもできます。"},
+// --- 分野3 Power Apps ---
+{d:3,q:"画面のレイアウトを白紙から自由にデザインでき、多くのデータソースに接続できるアプリはどれですか。",c:["キャンバス アプリ","モデル駆動型アプリ","デスクトップ フロー","Power Pages サイト"],a:0,e:"キャンバス アプリは、PowerPoint のように画面上に部品を自由に配置して作るアプリです。SharePoint、Excel、Dataverse など多くのデータに接続できます。",n:"デザインの自由度が高い反面、画面ごとのレイアウトは自分で調整する必要があります。"},
+{d:3,q:"Dataverse のデータ構造(テーブル・フォーム・ビュー)をもとに画面が自動で作られ、レスポンシブに表示されるアプリはどれですか。",c:["モデル駆動型アプリ","キャンバス アプリ","クラウド フロー","エージェント"],a:0,e:"モデル駆動型アプリは、データのモデル(構造)から画面が組み立てられるアプリです。複雑な業務プロセスやデータが多いシステムに向いています。",n:"モデル駆動型アプリのデータは Dataverse に保存されている必要があります。「Dataverse 必須=モデル駆動型」と覚えましょう。"},
+{d:3,q:"モデル駆動型アプリについて正しい説明はどれですか。",c:["データソースとして Dataverse を使用する","画面上の部品をピクセル単位で自由に配置するのが基本","SharePoint リストを直接の主データソースにする","オフラインの Excel ファイルのみを使う"],a:0,e:"モデル駆動型アプリは Dataverse を前提に作られます。画面の見た目はコンポーネントベースで、デバイスに合わせて自動調整されます。",n:"キャンバス アプリと比べると、デザインの自由度より「早く一貫した業務システムを作れること」が強みです。"},
+{d:3,q:"キャンバス アプリで、複数のレコードを一覧表示するためのコントロールはどれですか。",c:["ギャラリー","ボタン","テキスト入力","タイマー"],a:0,e:"ギャラリーは、データソースの複数の行を繰り返し表示するコントロールです。商品一覧や申請一覧などに使います。",n:"1 件のレコードを表示・編集するには「フォーム」コントロール(表示フォーム/編集フォーム)を使います。"},
+{d:3,q:"キャンバス アプリで、ボタンを押したときに別の画面へ移動させる Power Fx 関数はどれですか。",c:["Navigate","Patch","Filter","Sum"],a:0,e:"Navigate(画面名) で指定した画面に移動できます。ボタンの OnSelect プロパティに書くのが一般的です。",n:"Patch はデータの作成・更新、Filter は絞り込み、Sum は合計です。よく出る関数なので役割を覚えておきましょう。"},
+{d:3,q:"Copilot を使ってアプリを作る方法として正しいものはどれですか。",c:["作りたいアプリを自然言語で説明すると、テーブルとアプリの画面が生成される","コードを貼り付けないと生成されない","生成できるのはモデル駆動型アプリだけである","英語でしか指示できない"],a:0,e:"Power Apps のホーム画面で「備品の貸し出しを管理するアプリ」などと入力すると、Copilot がデータ構造とアプリを提案します。その後も会話しながら修正できます。",n:"日本語での指示にも対応しています。出題範囲では、キャンバス アプリとモデル駆動型アプリの両方を AI で作れることが問われます。"},
+{d:3,q:"業務の課題を説明すると、関係するユーザーやプロセスを整理し、必要なテーブル・アプリ・フローなどをまとめて提案してくれる Power Apps の機能はどれですか。",c:["Plan designer(計画デザイナー)","ギャラリー","DLP ポリシー","サイトマップ"],a:0,e:"Plan designer は、課題の説明から「誰が使うか」「どんな流れか」「どんなデータが必要か」を整理し、ソリューション全体の計画を AI が提案する機能です。",n:"新しい機能のため、日本語の画面名は変わる可能性があります(推測を含みます)。Microsoft Learn で最新の名称を確認してください。"},
+{d:3,q:"プロの開発者が使い慣れたコード(React など)でアプリを作り、Power Platform のコネクタや管理機能を利用しながら実行できるアプリの種類はどれですか。",c:["コード アプリ","モデル駆動型アプリ","デスクトップ フロー","Power Pages のテンプレート"],a:0,e:"コード アプリは、コード ファーストで開発した Web アプリを Power Platform 上で動かす仕組みです。コネクタや認証、ガバナンスを Power Platform のものとして使えます。",n:"比較的新しい機能です(推測を含みます)。試験では「キャンバス・モデル駆動型・コード アプリの使い分け」を意識しておきましょう。"},
+{d:3,q:"既存の Excel ファイルや SharePoint リストからすぐにアプリを作りたい場合、最も手早い方法はどれですか。",c:["データソースを指定してキャンバス アプリを自動生成する","モデル駆動型アプリのサイトマップを編集する","Copilot Studio でトピックを作る","デスクトップ フローを録画する"],a:0,e:"Power Apps では、データソースを選ぶだけで「一覧・詳細・編集」の 3 画面を持つキャンバス アプリが自動で作られます。",n:"Excel ファイルは OneDrive などクラウドに保存し、データを「テーブル」として書式設定しておく必要があります。"},
+{d:3,q:"アプリを他のユーザーに使ってもらうための操作として正しいものはどれですか。",c:["アプリを共有し、ユーザーに必要なデータへのアクセス権も付与する","アプリの .exe ファイルをメールで送る","DLP ポリシーを削除する","環境を削除して作り直す"],a:0,e:"Power Apps ではアプリを個人やグループに共有します。アプリ自体の共有だけでなく、データソース(Dataverse のセキュリティ ロールなど)へのアクセス権も必要です。",n:"共有されたアプリは、ブラウザーやスマホの Power Apps モバイル アプリから使えます。"},
+// --- 分野4 Power Automate ---
+{d:4,q:"「新しいメールを受信したとき」に自動的に開始されるフローの種類はどれですか。",c:["自動化したクラウド フロー","インスタント クラウド フロー","スケジュール済みクラウド フロー","デスクトップ フロー"],a:0,e:"何かのイベント(メール受信、ファイル作成など)をきっかけに自動で動くのが「自動化したクラウド フロー」です。",n:"クラウド フローは「自動化」「インスタント」「スケジュール済み」の 3 種類。試験でよく問われます。"},
+{d:4,q:"ユーザーがボタンをタップしたときに、手動で開始するフローの種類はどれですか。",c:["インスタント クラウド フロー","自動化したクラウド フロー","スケジュール済みクラウド フロー","ビジネス プロセス フロー"],a:0,e:"インスタント クラウド フローは、ボタンやアプリ、Teams のメッセージなどから人が手動で実行するフローです。",n:"Power Apps のボタンからフローを呼び出すのもインスタント フローの代表的な使い方です。"},
+{d:4,q:"毎週月曜日の朝 9 時にレポートを送信したい。どのフローを使いますか。",c:["スケジュール済みクラウド フロー","インスタント クラウド フロー","自動化したクラウド フロー","デスクトップ フロー(有人)"],a:0,e:"決まった日時や間隔で繰り返し実行するのはスケジュール済みクラウド フローです。",n:"タイム ゾーンの設定に注意しましょう。日本で使う場合は (UTC+09:00) 大阪、札幌、東京 を選びます。"},
+{d:4,q:"API が用意されていない古い社内システムの画面操作を、人の代わりに自動で行いたい。何を使いますか。",c:["デスクトップ フロー (RPA)","自動化したクラウド フロー","ビジネス ルール","ナレッジ ソース"],a:0,e:"デスクトップ フローは、マウス操作やキー入力を記録・再現する RPA(ロボティック プロセス オートメーション)の機能です。API がないアプリも自動化できます。",n:"作成には Windows 用の Power Automate for desktop を使います。"},
+{d:4,q:"フローを構成する要素のうち、「フローを開始するきっかけ」はどれですか。",c:["トリガー","アクション","コネクタ","変数"],a:0,e:"フローは「トリガー(きっかけ)」と「アクション(実行する処理)」でできています。1 つのフローにトリガーは 1 つ、アクションは複数置けます。",n:"例: トリガー「Forms に回答が送信されたとき」→ アクション「回答の詳細を取得」→「SharePoint に項目を作成」。"},
+{d:4,q:"経費申請が提出されたら上司に承認依頼を送り、Teams や Outlook から承認・却下できるようにしたい。どの機能を使いますか。",c:["承認コネクタ(承認アクション)","デスクトップ フロー","Dataverse のビュー","Copilot Studio のチャネル"],a:0,e:"Power Automate の承認アクションを使うと、承認依頼を送り、結果(承認/却下)に応じて処理を分けられます。承認者は Teams、Outlook、モバイル アプリから応答できます。",n:"「最初の応答者」「全員の承認」など、承認の種類も選べます。"},
+{d:4,q:"デスクトップ フローの「無人」実行の説明として正しいものはどれですか。",c:["ユーザーがサインインしていない状態のマシンで、人の操作なしに実行される","ユーザーが画面の前で操作しながら一緒に実行される","クラウド上でのみ実行され、PC は不要","必ず毎回承認が必要になる"],a:0,e:"無人 (unattended) RPA は、誰もログインしていないマシンでバックグラウンド実行されます。一方、有人 (attended) RPA は、ユーザーがサインインしている PC で人と一緒に動きます。",n:"無人実行には追加のライセンス(プロセス ライセンスなど)が必要です。"},
+{d:4,q:"Copilot を使ってクラウド フローを作る方法として正しいものはどれですか。",c:["「Forms の回答が届いたら Teams に通知して」のように自然言語で説明すると、フローの下書きが作られる","JSON を手書きしないと作れない","作成済みのフローは Copilot で修正できない","Copilot はデスクトップ フローにだけ対応している"],a:0,e:"Copilot に作りたい自動化を説明すると、必要なトリガーとアクションが組まれたフローが提案されます。作成後も「条件を追加して」などと会話で修正できます。",n:"出題範囲では、クラウド フローとデスクトップ フローの両方を AI で作成・修正できることが含まれます。"},
+{d:4,q:"請求書の PDF から請求番号や金額を自動で読み取り、システムに登録したい。Power Automate のどの使い方が当てはまりますか。",c:["ドキュメント自動化(AI によるドキュメント処理)","スケジュール済みフローのみで実現する","Dataverse のビューで抽出する","DLP ポリシーで抽出する"],a:0,e:"ドキュメント自動化は、AI で書類から必要な情報を抽出し、確認・登録までを自動化するシナリオです。紙や PDF を扱う業務の効率化に使われます。",n:"抽出結果が不確かな場合は、人が確認するステップ(Human in the loop)を入れるのが一般的です。"},
+{d:4,q:"Salesforce など一部のサービスのコネクタを使うには、追加のライセンスが必要です。これらのコネクタを何と呼びますか。",c:["プレミアム コネクタ","標準コネクタ","システム コネクタ","トリガー コネクタ"],a:0,e:"プレミアム コネクタは、Microsoft 365 に含まれる標準ライセンスでは使えず、Power Automate Premium などの有料ライセンスが必要です。",n:"Dataverse コネクタもプレミアムに分類される点がよく問われます(Microsoft 365 の Dataverse for Teams を除く)。"},
+// --- 分野5 Copilot Studio ---
+{d:5,q:"Copilot Studio で、特定の話題についての会話の流れ(質問・分岐・回答)を定義するものはどれですか。",c:["トピック","チャネル","環境","ビュー"],a:0,e:"トピックは、会話の 1 つのまとまりです。どんな言葉で始まるか(トリガー)と、その後の質問・条件分岐・メッセージなどを設計します。",n:"「営業時間を教えて」「パスワードを忘れた」など、よくある問い合わせごとにトピックを作ります。"},
+{d:5,q:"エージェントがユーザーの言葉を理解できなかったときに動く、あらかじめ用意されたトピックはどれですか。",c:["フォールバック(システム トピック)","会話の開始","挨拶(カスタム トピック)","エスカレート"],a:0,e:"システム トピックの「フォールバック」は、どのトピックにも当てはまらなかったときに実行されます。言い換えを促したり、担当者につないだりします。",n:"システム トピックには「会話の開始」「エスカレート」「会話の終了」「エラー時」などがあります。"},
+{d:5,q:"エージェントに社内の SharePoint サイトや公開 Web サイトの情報をもとに回答させたい。何を追加しますか。",c:["ナレッジ ソース","DLP ポリシー","セキュリティ ロール","ギャラリー"],a:0,e:"ナレッジ ソースを追加すると、エージェントはそこにある情報を使って生成 AI で回答を作ります。トピックを 1 つずつ作らなくても幅広い質問に答えられます。",n:"ナレッジには Web サイト、SharePoint、アップロードしたファイル、Dataverse などが使えます。"},
+{d:5,q:"エージェントが会話の中で「休暇申請を登録する」などの処理を実行できるように追加するものはどれですか。",c:["ツール(コネクタ、エージェント フロー、MCP サーバーなど)","ナレッジ ソースのみ","チャネル","ビュー"],a:0,e:"ツールを追加すると、エージェントは情報を答えるだけでなく、外部システムの操作や処理の実行ができるようになります。",n:"ツールの種類には、コネクタ、エージェント フロー、MCP サーバー、プロンプトなどがあります。"},
+{d:5,q:"MCP (Model Context Protocol) サーバーを Copilot Studio のエージェントに接続する目的として、最も適切なものはどれですか。",c:["標準化された方法で外部のツールやデータをエージェントから使えるようにする","エージェントの画面の色を変更する","ユーザーのライセンスを管理する","Dataverse のバックアップを取る"],a:0,e:"MCP は、AI が外部のツールやデータにアクセスするための共通規格です。MCP サーバーを接続すると、そのサーバーが提供する機能をエージェントがツールとして使えます。",n:"USB のように「差し込めばつながる」共通の接続口、とイメージすると分かりやすいです。"},
+{d:5,q:"Copilot Studio の中で作成し、エージェントから呼び出して決まった処理を自動実行できるフローを何と呼びますか。",c:["エージェント フロー","デスクトップ フロー","ビジネス プロセス フロー","スケジュール済みフロー"],a:0,e:"エージェント フローは、Copilot Studio 上で作る自動化フローです。エージェントのツールとして呼び出し、承認やデータ登録などの決まった手順を確実に実行できます。",n:"AI の判断に任せず、毎回同じ手順で処理したい部分に向いています。"},
+{d:5,q:"完成したエージェントを Microsoft Teams や社外向け Web サイトで使えるようにするには、何を設定しますか。",c:["公開してチャネルを設定する","DLP ポリシーを無効にする","モデル駆動型アプリに変換する","環境を削除する"],a:0,e:"エージェントは「公開」した後、Teams、Microsoft 365 Copilot、Web サイト、モバイル アプリなどの「チャネル」に配置して利用します。",n:"トピックやナレッジを変更したら、再度公開しないとユーザー側には反映されません。"},
+{d:5,q:"エージェントの利用状況を確認する分析で、一般的に確認できる指標として適切なものはどれですか。",c:["セッション数、解決率、エスカレーション率、満足度","キャンバス アプリの画面数","環境のバックアップ容量のみ","Excel ファイルの行数"],a:0,e:"Copilot Studio の分析では、会話の数、問題が解決した割合、担当者への引き継ぎ率、ユーザー満足度(CSAT)などを確認し、改善につなげます。",n:"利用状況(導入状況)のモニタリングは、出題範囲の「エージェントの管理」に含まれます。"},
+{d:5,q:"Copilot Studio の「エージェント評価」の目的として正しいものはどれですか。",c:["テスト用の質問セットを使って、エージェントの回答品質を確認する","エージェントの利用料金を計算する","エージェントを自動で削除する","ユーザーの勤務評価をする"],a:0,e:"エージェント評価では、想定される質問と期待する回答を用意し、エージェントが正しく答えられるかをまとめてテストします。公開前や変更後の品質確認に役立ちます。",n:"新しい機能のため、画面の名称は変わる場合があります(推測を含みます)。"},
+{d:5,q:"Microsoft Agent 365 の用途として、最も適切なものはどれですか。",c:["組織内のエージェントを一元的に把握・管理・保護する","Excel のマクロを作成する","Power Pages のデザインを編集する","デスクトップ フローを録画する"],a:0,e:"Agent 365 は、組織で増えていく AI エージェントを登録・管理し、アクセス制御や監視を行うための仕組みです。エージェントのガバナンスに使われます。",n:"2026年7月の改訂で追加された比較的新しい項目です。詳細は Microsoft Learn で最新情報を確認してください(推測を含みます)。"},
+{d:5,q:"ユーザーの質問に合わせて、AI がどのトピック・ナレッジ・ツールを使うかを自動で判断する Copilot Studio の機能はどれですか。",c:["生成オーケストレーション","クラシック オーケストレーション(トリガー フレーズのみ)","DLP ポリシー","サイトマップ"],a:0,e:"生成オーケストレーションを有効にすると、AI がユーザーの意図を理解し、最適なトピックやツール、ナレッジを組み合わせて応答します。",n:"クラシック方式では、トリガー フレーズに一致したトピックが実行されます。違いを押さえておきましょう。"}
+];
+Q.forEach((q,i)=>q.id="q"+(i+1)); // 各問題にIDを付ける(進捗保存用)
+
+// ===== 学習(요약) 데이터 =====
+// 각 분야별 섹션: t=제목, p=요점, k=[용어,설명], tip=시험 포인트
+const STUDY = {
+1:[
+ {t:"Power Platform の全体像",p:["Power Platform は、業務アプリ・自動化・AI エージェント・Web サイトをローコードで作るための製品群です。","Power Apps(アプリ)、Power Automate(自動化)、Copilot Studio(エージェント)、Power Pages(外部向けサイト)が主な製品です。","これらを Dataverse(データ基盤)、コネクタ(外部接続)、Power Fx(数式言語)、生成 AI(Copilot)が共通の土台として支えます。"],
+  k:[["Power Apps","業務アプリを作る"],["Power Automate","繰り返し作業を自動化する"],["Copilot Studio","会話型の AI エージェントを作る"],["Power Pages","社外の人も使える Web サイトを作る"]],
+  tip:"「〜したい」という要件から製品を選ぶ問題が定番です。アプリ=Power Apps、自動化=Power Automate、会話=Copilot Studio、外部サイト=Power Pages。"},
+ {t:"ローコードと市民開発者",p:["ローコードとは、ドラッグ＆ドロップや Excel のような数式で、少ないコードでソリューションを作れることです。","業務を一番よく知る現場の人(市民開発者)が、自分で課題を解決できるのが最大の価値です。","開発期間の短縮、IT 部門の負担軽減、変化への素早い対応につながります。","市民開発者とプロ開発者が協力するチームを「フュージョン チーム」と呼びます。"],
+  k:[["市民開発者","IT 専門家ではないが、ローコードでアプリなどを作る業務担当者"],["プロ開発者","コードで機能を拡張する専門の開発者"],["フュージョン チーム","業務担当者と IT 担当者の協働チーム"]],
+  tip:"ローコードは「コード禁止」ではありません。プロ開発者がコードで拡張できる点もセットで覚えましょう。"},
+ {t:"コネクタと Dataverse の価値",p:["コネクタは、Microsoft 365 や外部サービス(Salesforce など)とつなぐための部品で、1,000 種類以上が用意されています。","標準コネクタは Microsoft 365 のライセンスで使えますが、プレミアム コネクタには追加ライセンスが必要です。","用意されていない API にはカスタム コネクタを作れます。","Dataverse は、セキュリティ・ビジネス ロジック・標準テーブルが組み込まれた共通データ基盤です。"],
+  k:[["標準コネクタ","SharePoint、Outlook、Teams など"],["プレミアム コネクタ","Dataverse、Salesforce、SQL Server など"],["カスタム コネクタ","独自 API 用に自作するコネクタ"]],
+  tip:"Dataverse コネクタはプレミアム扱い、という点がよく出ます。"},
+ {t:"生成 AI と Copilot Studio の価値",p:["Copilot を使うと、作りたいものを自然言語で説明するだけでアプリ・フロー・テーブルの下書きができます。","Copilot Studio では、社内 FAQ 対応や業務代行をする AI エージェントを作れます。","Teams、Outlook、SharePoint など Microsoft 365 と深く統合されているため、普段の業務の中で使えます。"],
+  k:[["Copilot","自然言語で作成・編集を手伝う生成 AI 機能"],["エージェント","ユーザーと会話し、情報提供や処理を行う AI"]],
+  tip:"AI が作ったものは下書き。人が確認して使う、という考え方(責任ある AI)も押さえましょう。"}
+],
+2:[
+ {t:"Dataverse の基本構造",p:["データはテーブルに保存されます。行=1 件のレコード、列=項目です。","最初から「取引先企業」「取引先担当者」などの標準テーブルがあり、自分でカスタム テーブルも作れます。","テーブル同士はリレーションシップでつながります(1 対多、多対 1、多対多)。","列には、テキスト、数値、日付、選択肢、検索(ルックアップ)、ファイルなど多くの型があります。"],
+  k:[["テーブル","旧称エンティティ。データの入れ物"],["列","旧称フィールド。データの項目"],["検索列","他テーブルの行を参照する列(1 対多の多側にできる)"],["選択肢列","決まった候補から選ぶ列"]],
+  tip:"新旧の名称(エンティティ→テーブル、フィールド→列、レコード→行)が混ざって出題されることがあります。"},
+ {t:"フォーム・ビュー・ビジネス ロジック",p:["フォームは 1 件のレコードを表示・編集する画面、ビューは複数レコードの一覧です。","ビジネス ルールで、コードを書かずに「必須にする」「値を設定する」「エラーを表示する」などを設定できます。","Power Fx を使った数式列で、他の列から値を自動計算できます。","Copilot に自然言語で説明すると、テーブル・列・リレーションシップの案を作れます。"],
+  k:[["フォーム","メイン、簡易作成、簡易表示などの種類がある"],["ビュー","パブリック、個人、システムなどの種類がある"],["ビジネス ルール","ノーコードの入力ルール"],["Power Fx","Excel に似たローコード言語"]],
+  tip:"「一覧=ビュー」「1 件=フォーム」の区別は頻出です。"},
+ {t:"環境と管理センター",p:["環境は、アプリ・フロー・データを入れる「箱」です。開発・テスト・本番を分けて使います。","1 つの環境に Dataverse データベースは最大 1 つです。","環境の種類には、運用(本番)、サンドボックス、試用版、開発者、既定などがあります。","環境の作成・管理は Power Platform 管理センターで行います。"],
+  k:[["既定の環境","テナントに自動で作られ、全員が使える環境。本番業務には不向き"],["サンドボックス","テストや開発に使う環境。リセットやコピーができる"],["管理センター","admin.powerplatform.microsoft.com"]],
+  tip:"「本番に影響を与えずにテストしたい」→ 別の環境(サンドボックス)を使う、が正解パターンです。"},
+ {t:"セキュリティとガバナンス",p:["サインインは Microsoft Entra ID(旧 Azure AD)で認証されます。","Dataverse の権限は、業務単位・セキュリティ ロール・チームで管理します。","セキュリティ ロールでは、テーブルごとに作成・読み取り・書き込み・削除などの権限と範囲(ユーザー/業務単位/組織)を決めます。","DLP(データ損失防止)ポリシーで、コネクタを「ビジネス」「非ビジネス」「ブロック」に分類し、データ漏えいを防ぎます。","監査ログ、データの保存地域、アクセシビリティへの配慮もガバナンスの一部です。"],
+  k:[["業務単位","部署などの組織構造を表す単位"],["セキュリティ ロール","何をどの範囲で操作できるかの定義"],["列レベル セキュリティ","特定の列だけ見せない設定"],["DLP ポリシー","コネクタの組み合わせを制限するルール"]],
+  tip:"「ビジネス」と「非ビジネス」のコネクタは同じアプリ/フローで一緒に使えない、が DLP の核心です。"},
+ {t:"監視と ALM(ライフサイクル管理)",p:["管理センターの分析で、利用状況・容量・アクティブ ユーザーなどを確認できます。","アプリやフローはソリューションにまとめて、環境間を移動させます。","パイプラインを使うと、開発→テスト→本番への展開を簡単・安全に行えます。","環境ごとに変わる値(URL など)は環境変数で管理します。"],
+  k:[["ソリューション","アプリ・フロー・テーブルなどをまとめた入れ物"],["アンマネージド","開発中の編集できるソリューション"],["マネージド","本番に配布する、編集できないソリューション"],["パイプライン","ソリューションを環境間で展開する仕組み"]],
+  tip:"開発環境ではアンマネージド、本番環境にはマネージド ソリューションを入れるのが基本です。"}
+],
+3:[
+ {t:"アプリの 3 つの種類",p:["キャンバス アプリ: 白紙の画面に部品を自由に配置。多くのデータソースに接続できる。","モデル駆動型アプリ: Dataverse のデータ構造から画面が自動で作られる。複雑な業務向き。","コード アプリ: プロ開発者がコード(React など)で作り、Power Platform のコネクタや管理機能を使って動かす。"],
+  k:[["キャンバス","デザイン自由・データソース多数"],["モデル駆動型","Dataverse 必須・レスポンシブ・一貫した UI"],["コード アプリ","コード ファースト開発(新しい機能・推測を含む)"]],
+  tip:"「Dataverse のデータを使い、画面を自動生成」→ モデル駆動型。「デザインを自由に、SharePoint や Excel のデータで」→ キャンバス。"},
+ {t:"キャンバス アプリの作り方",p:["Power Apps Studio で画面(スクリーン)とコントロールを配置して作ります。","データソース(Excel、SharePoint など)を選ぶだけで、一覧・詳細・編集の 3 画面アプリを自動生成できます。","動きは Power Fx の数式で設定します(例: ボタンの OnSelect に Navigate)。"],
+  k:[["ギャラリー","複数レコードの一覧表示"],["フォーム","1 件の表示・編集"],["Navigate","画面を移動する"],["Patch","レコードを作成・更新する"],["Filter / LookUp","絞り込み / 1 件検索"]],
+  tip:"Excel をデータソースにする場合は、OneDrive などクラウド上に置き、テーブルとして書式設定しておく必要があります。"},
+ {t:"モデル駆動型アプリの構成",p:["テーブル、フォーム、ビュー、グラフ、ダッシュボードを組み合わせて作ります。","画面左側のナビゲーション(メニュー)はサイトマップで定義します。","ビジネス プロセス フローで、業務の段階(例: 見込み→提案→成約)を画面上に表示できます。"],
+  k:[["サイトマップ","アプリのナビゲーション構造"],["ダッシュボード","グラフや一覧をまとめた画面"],["ビジネス プロセス フロー","業務の手順を段階表示するガイド"]],
+  tip:"モデル駆動型はレイアウトを細かく決めるより「データ設計」が中心、と覚えましょう。"},
+ {t:"AI でアプリを作る・共有する",p:["Copilot に自然言語で説明すると、テーブルとアプリ(キャンバス/モデル駆動型)が生成されます。","Plan designer は、業務課題の説明から、ユーザー・プロセス・データ・必要なアプリやフローまで含めた計画を提案します。","会話しながら AI と一緒にアプリを作る新しい体験も出題範囲に含まれます(名称は変わる可能性あり)。","完成したアプリはユーザーやグループに共有し、データへのアクセス権も付与します。スマホの Power Apps アプリや Teams から使えます。"],
+  k:[["Copilot","自然言語でアプリを生成・編集"],["Plan designer","ソリューション全体の計画を AI が提案(推測を含む)"],["共有","アプリ + データの権限の両方が必要"]],
+  tip:"新機能は試験直前に Microsoft Learn で最新の名称を確認しましょう。"}
+],
+4:[
+ {t:"フローの種類",p:["クラウド フローには 3 種類あります: 自動化(イベントで開始)、インスタント(手動で開始)、スケジュール済み(日時で開始)。","デスクトップ フローは、PC の画面操作を自動化する RPA です。API のない古いシステムにも使えます。","デスクトップ フローには、人が PC の前にいる「有人」と、誰もサインインしていない状態で動く「無人」があります。"],
+  k:[["自動化したクラウド フロー","メール受信、ファイル作成などで自動開始"],["インスタント クラウド フロー","ボタンなどで手動開始"],["スケジュール済みクラウド フロー","毎日 9 時などに開始"],["デスクトップ フロー","Power Automate for desktop で作る RPA"]],
+  tip:"「きっかけは何か?」で種類を判断します。イベント→自動化、人→インスタント、時間→スケジュール。"},
+ {t:"トリガーとアクション",p:["フローは「トリガー(きっかけ)」1 つと「アクション(処理)」複数でできています。","前のステップの結果は「動的なコンテンツ」として次のアクションで使えます。","条件(If)、繰り返し(Apply to each)、式などで処理を組み立てます。"],
+  k:[["トリガー","フローを開始するイベント"],["アクション","実行する処理(メール送信、項目作成など)"],["動的なコンテンツ","前のステップの出力値"],["コネクタ","トリガーとアクションを提供する部品"]],
+  tip:"1 つのフローに置けるトリガーは 1 つ、が基本です。"},
+ {t:"よくある使い方",p:["承認: 申請を上司に送り、Teams・Outlook・モバイルから承認/却下できる。","Teams・Outlook: 通知やメール送信、投稿の自動化。","SharePoint・Forms: フォームの回答を SharePoint リストに自動登録。","ドキュメント自動化: AI で請求書などから情報を抽出し、登録まで自動化。"],
+  k:[["承認アクション","承認依頼を送り、結果で処理を分ける"],["ドキュメント自動化","書類から AI でデータを読み取る"]],
+  tip:"「Forms の回答 → SharePoint に追加 → Teams に通知」のような組み合わせは典型例です。"},
+ {t:"AI でフローを作る・ライセンス",p:["Copilot に「〜したら〜して」と説明すると、クラウド フローの下書きが作られ、会話で修正もできます。","デスクトップ フローも AI を使って作成・修正できます。","Microsoft 365 のライセンスでは標準コネクタのクラウド フローが使えます。プレミアム コネクタや無人 RPA には追加ライセンスが必要です。"],
+  k:[["Power Automate Premium","プレミアム コネクタや有人 RPA を使えるユーザー ライセンス"],["プロセス ライセンス","無人 RPA などに使うライセンス"]],
+  tip:"日本で使う場合、スケジュールのタイム ゾーンは (UTC+09:00) 大阪、札幌、東京 に設定します。"}
+],
+5:[
+ {t:"Copilot Studio とエージェント",p:["Copilot Studio は、会話型の AI エージェントをローコードで作るツールです(旧 Power Virtual Agents)。","社内ヘルプデスク、人事 FAQ、顧客サポート、業務手続きの代行などに使われます。","作りたいエージェントを自然言語で説明して作成を始められます。"],
+  k:[["エージェント","質問に答えたり、処理を実行したりする AI"],["Power Virtual Agents","Copilot Studio の旧名"]],
+  tip:"古い教材の「Power Virtual Agents」「ボット」は、現在の「Copilot Studio」「エージェント」に読み替えましょう。"},
+ {t:"トピックで会話を設計する",p:["トピックは会話の 1 つのまとまりで、開始のきっかけ(トリガー)と、その後の流れを設計します。","流れは、メッセージ、質問、条件分岐、変数、ツールの呼び出しなどのノードで作ります。","システム トピック(会話の開始、フォールバック、エスカレート、エラー時など)はあらかじめ用意されています。","生成オーケストレーションでは、AI がユーザーの意図に合わせてトピック・ツール・ナレッジを自動で選びます。"],
+  k:[["トピック","会話の流れの単位"],["フォールバック","どのトピックにも当てはまらないときに動く"],["エスカレート","人の担当者に引き継ぐ"],["生成オーケストレーション","AI が応答方法を自動判断"]],
+  tip:"クラシック(トリガー フレーズで一致)と生成オーケストレーション(AI が判断)の違いを押さえましょう。"},
+ {t:"ナレッジとツール",p:["ナレッジ ソース(公開 Web サイト、SharePoint、ファイル、Dataverse など)を追加すると、その情報をもとに生成 AI が回答します。","ツールを追加すると、エージェントが処理を実行できます(コネクタ、エージェント フロー、MCP サーバー、プロンプトなど)。","エージェント フローは Copilot Studio 内で作る自動化フローで、決まった手順を確実に実行します。","MCP サーバーは、外部のツールやデータを標準的な方法で接続する仕組みです。"],
+  k:[["ナレッジ","回答の根拠になる情報源"],["ツール","エージェントが使う処理(旧アクション/プラグイン)"],["エージェント フロー","エージェントから呼び出す自動化"],["MCP","Model Context Protocol。AI と外部ツールの共通接続規格"]],
+  tip:"「情報を答えさせたい」→ ナレッジ、「処理を実行させたい」→ ツール、と区別しましょう。"},
+ {t:"公開・チャネル・管理",p:["エージェントは公開した後、Teams、Microsoft 365 Copilot、Web サイトなどのチャネルに配置します。","変更後は再公開しないとユーザーに反映されません。","分析では、セッション数、解決率、エスカレーション率、満足度(CSAT)などを確認します。","エージェント評価で、テスト用の質問セットを使って回答の品質を確認できます。","Microsoft Agent 365 は、組織内のエージェントを一元的に把握・管理・保護する仕組みです(推測を含む)。"],
+  k:[["チャネル","エージェントを使う場所"],["解決率","エージェントで問題が解決した割合"],["CSAT","ユーザー満足度"],["Agent 365","エージェントのガバナンス(新しい項目)"]],
+  tip:"2026年7月の改訂で追加された分野です。配点 20〜25% と大きいので重点的に学びましょう。"}
+]
+};
+
+// ===== 저장 (이 브라우저에만 저장) =====
+const KEY="pl900-drill-v1";
+const DEF={stats:{},marks:{},read:{},days:{},set:{theme:"system",fs:"m",count:10,goal:10,shuffle:true,exam:""}};
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||{}}catch(e){return {}}}
+let S=merge(load());
+function merge(o){const s=Object.assign({},JSON.parse(JSON.stringify(DEF)),o);s.set=Object.assign({},DEF.set,o.set||{});return s}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+
+// ===== 편리 함수 =====
+const $=s=>document.querySelector(s);
+const esc=t=>String(t).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const weak=()=>Q.filter(q=>S.stats[q.id]&&S.stats[q.id].last===false); // 최근에 틀린 문제
+const marked=()=>Q.filter(q=>S.marks[q.id]);
+// 일본 시간 기준 날짜 (YYYY-MM-DD)
+const jst=(d=new Date())=>d.toLocaleDateString("sv-SE",{timeZone:"Asia/Tokyo"});
+function streak(){ // 연속 학습 일수
+  let n=0,d=new Date();
+  if(!S.days[jst(d)])d=new Date(d.getTime()-864e5); // 오늘 아직 안 했으면 어제부터 계산
+  while(S.days[jst(d)]){n++;d=new Date(d.getTime()-864e5)}
+  return n;
+}
+function daysLeft(){ // 시험까지 남은 일수
+  if(!S.set.exam)return null;
+  return Math.round((new Date(S.set.exam+"T00:00:00+09:00")-new Date(jst()+"T00:00:00+09:00"))/864e5);
+}
+
+// ===== 화면 설정 적용 (테마·글자 크기) =====
+function applySettings(){
+  const r=document.documentElement;
+  if(S.set.theme==="system")r.removeAttribute("data-theme"); else r.setAttribute("data-theme",S.set.theme);
+  r.style.setProperty("--fs",{s:"14px",m:"16px",l:"18px",xl:"20px"}[S.set.fs]||"16px");
+}
+
+// ===== 탭 전환 =====
+let tab="study", run=null;
+function go(t){tab=t;run=null;$("#tabs").hidden=false;
+  document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.tab===t));
+  ({study:studyHome,quiz:quizHome,set:settings})[t]();window.scrollTo(0,0)}
+document.querySelectorAll("#tabs button").forEach(b=>b.onclick=()=>go(b.dataset.tab));
+
+// 오늘의 학습 카드 (学習・問題 탭 상단에 표시)
+function todayCard(){
+  const n=S.days[jst()]||0, g=S.set.goal, dl=daysLeft();
+  return `<div class="today">
+    <div class="row"><span class="big">今日 <b>${n}</b> / ${g} 問</span>
+      <span>${dl===null?`<span class="chip">試験日は設定で登録</span>`:dl>=0?`<span class="chip warn">試験まであと ${dl} 日</span>`:`<span class="chip">試験日を過ぎました</span>`}</span></div>
+    <div class="bar acc"><i style="width:${Math.min(100,n/g*100)}%"></i></div>
+    <div class="row"><span>${n>=g?"今日の目標を達成しました":"目標まであと "+(g-n)+" 問"}</span><span>連続 <b>${streak()}</b> 日</span></div>
+  </div>`;
+}
+
+// ===== 学習 탭 =====
+function studyHome(){
+  const all=Object.values(STUDY).flat().length, done=Object.keys(S.read).length;
+  $("#app").innerHTML=`
+  <header class="top"><h1>学習<small>Microsoft Learn の要点まとめ</small></h1></header>
+  ${todayCard()}
+  <h2>分野ごとの要点 <small style="font-family:var(--f-body);font-weight:400;font-size:.75rem;color:var(--muted)">読了 ${done} / ${all}</small></h2>
+  <div class="domains">${DOMAINS.map(d=>{
+    const secs=STUDY[d.id], r=secs.filter((_,i)=>S.read[d.id+"-"+i]).length;
+    return `<button class="domain" data-dom="${d.id}">
+      <div class="row"><span class="name">分野${d.id}・${esc(d.name)}</span><span class="w">配点 ${d.w}</span></div>
+      <div class="bar acc"><i style="width:${r/secs.length*100}%"></i></div>
+      <span class="meta">読了 ${r} / ${secs.length} 項目</span></button>`}).join("")}</div>
+  <p class="note">公式の Microsoft Learn と学習ガイド(2026年7月24日改訂版)をもとに要点をまとめたものです。「推測を含む」と書かれた項目は、最新情報を公式サイトで確認してください。</p>`;
+  document.querySelectorAll("[data-dom]").forEach(b=>b.onclick=()=>studyDomain(+b.dataset.dom));
+}
+function studyDomain(id){
+  const d=DOMAINS[id-1];
+  $("#app").innerHTML=`
+  <header class="top"><button class="icon-btn" id="back">‹ 戻る</button><h1 style="font-size:.95rem">分野${id}・${esc(d.name)}<small>配点 ${d.w}</small></h1></header>
+  ${STUDY[id].map((s,i)=>{const key=id+"-"+i,on=!!S.read[key];return `
+  <section class="sec">
+    <h3>${esc(s.t)}${on?`<span class="done">✓ 読了</span>`:""}</h3>
+    <ul>${s.p.map(p=>`<li>${esc(p)}</li>`).join("")}</ul>
+    <dl class="terms">${s.k.map(k=>`<div><dt>${esc(k[0])}</dt><dd>${esc(k[1])}</dd></div>`).join("")}</dl>
+    <div class="tip"><b>試験のポイント</b><br>${esc(s.tip)}</div>
+    <button class="btn readbtn ${on?"on":""}" data-key="${key}">${on?"✓ 読了済み":"読み終えた"}</button>
+  </section>`}).join("")}
+  <div class="actions" style="margin-top:20px"><button class="btn primary" id="toquiz">この分野の問題を解く ›</button></div>
+  <p class="note"><a href="${d.learn}" target="_blank" rel="noopener">Microsoft Learn で詳しく学ぶ ↗</a></p>`;
+  $("#back").onclick=()=>go("study");
+  document.querySelectorAll(".readbtn").forEach(b=>b.onclick=()=>{
+    const k=b.dataset.key; S.read[k]?delete S.read[k]:S.read[k]=1; save();
+    const y=window.scrollY; studyDomain(id); window.scrollTo(0,y);
+  });
+  $("#toquiz").onclick=()=>{tab="quiz";start(shuffle(Q.filter(q=>q.d===id)),DOMAINS[id-1].name)};
+  window.scrollTo(0,0);
+}
+
+// ===== 問題 탭 =====
+function quizHome(){
+  const done=Q.filter(q=>S.stats[q.id]).length;
+  let c=0,t=0;Object.values(S.stats).forEach(s=>{c+=s.c;t+=s.c+s.w});
+  const rate=t?Math.round(c/t*100)+"%":"–", n=S.set.count;
+  $("#app").innerHTML=`
+  <header class="top"><h1>問題演習<small>Power Platform Fundamentals・日本語</small></h1></header>
+  ${todayCard()}
+  <div class="summary">
+    <div class="stat"><b>${done}<small style="font-size:.8rem;font-weight:400">/${Q.length}</small></b><span>解いた問題</span></div>
+    <div class="stat"><b>${rate}</b><span>正答率</span></div>
+    <div class="stat"><b>${weak().length}</b><span>要復習</span></div>
+  </div>
+  <h2>学習モード</h2>
+  <div class="modes">
+    <button class="btn primary" data-mode="rand" data-title="ランダム ${n} 問">ランダム ${n} 問<small>全分野から出題 ›</small></button>
+    <button class="btn" data-mode="weak" data-title="苦手を復習" ${weak().length?"":"disabled"}>苦手を復習<small>直近で間違えた ${weak().length} 問 ›</small></button>
+    <button class="btn" data-mode="mark" data-title="ブックマーク" ${marked().length?"":"disabled"}>ブックマーク<small>${marked().length} 問 ›</small></button>
+    <button class="btn" data-mode="all" data-title="全問チャレンジ">全問チャレンジ<small>${Q.length} 問 ›</small></button>
+  </div>
+  <h2>分野別に解く</h2>
+  <div class="domains">${DOMAINS.map(d=>{
+    const qs=Q.filter(q=>q.d===d.id), ok=qs.filter(q=>S.stats[q.id]&&S.stats[q.id].last).length;
+    return `<button class="domain" data-dom="${d.id}">
+      <div class="row"><span class="name">分野${d.id}・${esc(d.name)}</span><span class="w">配点 ${d.w}</span></div>
+      <div class="bar"><i style="width:${qs.length?ok/qs.length*100:0}%"></i></div>
+      <span class="meta">正解済み ${ok} / ${qs.length} 問</span></button>`}).join("")}</div>
+  <p class="note">公式の学習ガイド(2026年7月24日改訂版)をもとに作成した練習問題です。実際の試験問題ではありません。</p>`;
+  document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{
+    const m=b.dataset.mode;
+    const list=m==="rand"?shuffle(Q).slice(0,n):m==="weak"?shuffle(weak()):m==="mark"?shuffle(marked()):shuffle(Q);
+    start(list,b.dataset.title);
+  });
+  document.querySelectorAll("[data-dom]").forEach(b=>b.onclick=()=>{const d=+b.dataset.dom;start(shuffle(Q.filter(q=>q.d===d)),DOMAINS[d-1].name)});
+}
+
+// ===== 퀴즈 진행 =====
+function start(list,title){run={list,title,i:0,ok:0,wrong:[]};$("#tabs").hidden=true;show()}
+function show(){
+  const q=run.list[run.i], d=DOMAINS[q.d-1];
+  // 선택지 순서 섞기 (설정에서 끌 수 있음)
+  const order=S.set.shuffle?shuffle(q.c.map((_,k)=>k)):q.c.map((_,k)=>k);
+  $("#app").innerHTML=`
+  <header class="top"><button class="icon-btn" id="quit">‹ 終了</button><h1 style="font-size:.95rem">${esc(run.title)}</h1></header>
+  <div class="qhead"><span class="tag">分野${q.d}</span><span>${esc(d.name)}</span><span class="count">${run.i+1} / ${run.list.length}</span></div>
+  <div class="qbar"><i style="width:${run.i/run.list.length*100}%"></i></div>
+  <p class="question">${esc(q.q)}</p>
+  <div class="choices">${order.map((k,n)=>`<button class="choice" data-k="${k}"><span class="k">${"ABCD"[n]}</span><span>${esc(q.c[k])}</span></button>`).join("")}</div>
+  <div id="after"></div>`;
+  $("#quit").onclick=()=>go(tab);
+  document.querySelectorAll(".choice").forEach(b=>b.onclick=()=>answer(q,+b.dataset.k,order));
+  window.scrollTo(0,0);
+}
+function answer(q,k,order){
+  const right=k===q.a;
+  const s=S.stats[q.id]||{c:0,w:0};
+  right?s.c++:s.w++; s.last=right; S.stats[q.id]=s;
+  S.days[jst()]=(S.days[jst()]||0)+1; save(); // 오늘 푼 문제 수 기록
+  right?run.ok++:run.wrong.push(q);
+  document.querySelectorAll(".choice").forEach(b=>{
+    const bk=+b.dataset.k; b.disabled=true;
+    if(bk===q.a)b.classList.add("ok"); else if(bk===k)b.classList.add("ng");
+  });
+  const letter="ABCD"[order.indexOf(q.a)], last=run.i===run.list.length-1;
+  $("#after").innerHTML=`
+  <div class="verdict ${right?"ok":"ng"}">${right?"○ 正解":"× 不正解"}</div>
+  <div class="exp">
+    <h3>正解 ${letter}</h3><p><b>${esc(q.c[q.a])}</b></p>
+    <h3>解説</h3><p>${esc(q.e)}</p>
+    <div class="plus"><h3>補足・覚え方</h3><p>${esc(q.n)}</p></div>
+    <p><a href="${DOMAINS[q.d-1].learn}" target="_blank" rel="noopener">この分野を Microsoft Learn で学ぶ ↗</a></p>
+  </div>
+  <div class="actions">
+    <button class="btn mark ${S.marks[q.id]?"on":""}" id="mark">${S.marks[q.id]?"★ 保存済み":"☆ 保存"}</button>
+    <button class="btn primary" id="next">${last?"結果を見る":"次の問題 ›"}</button>
+  </div>`;
+  $("#mark").onclick=e=>{S.marks[q.id]?delete S.marks[q.id]:S.marks[q.id]=1;save();
+    e.currentTarget.classList.toggle("on",!!S.marks[q.id]);e.currentTarget.textContent=S.marks[q.id]?"★ 保存済み":"☆ 保存"};
+  $("#next").onclick=()=>{last?result():(run.i++,show())};
+  $("#after").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function result(){
+  const n=run.list.length, pct=Math.round(run.ok/n*100);
+  const msg=pct>=70?"合格ライン(1000点中700点)の目安を超えています。":"合格の目安は正答率 70% 前後です。間違えた問題を復習しましょう。";
+  $("#app").innerHTML=`
+  <header class="top"><h1>結果<small>${esc(run.title)}</small></h1></header>
+  <div class="score"><b>${pct}%</b><p>${run.ok} / ${n} 問 正解</p><p style="margin-top:8px">${msg}</p></div>
+  ${run.wrong.length?`<h2>間違えた問題</h2><div class="review">${run.wrong.map(q=>`<div>${esc(q.q)}<small>正解: ${esc(q.c[q.a])}</small></div>`).join("")}</div>`:""}
+  <div class="actions" style="margin-top:24px">
+    ${run.wrong.length?`<button class="btn" id="retry">間違えた問題を解き直す</button>`:""}
+    <button class="btn primary" id="back">戻る</button>
+  </div>`;
+  $("#back").onclick=()=>go(tab);
+  if(run.wrong.length)$("#retry").onclick=()=>start(shuffle(run.wrong),"解き直し");
+  window.scrollTo(0,0);
+}
+
+// ===== 設定 탭 =====
+function seg(name,opts,cur){return `<div class="seg" data-seg="${name}">${opts.map(([v,l])=>`<button data-v="${v}" class="${String(cur)===String(v)?"on":""}">${l}</button>`).join("")}</div>`}
+function settings(){
+  const st=S.set;
+  $("#app").innerHTML=`
+  <header class="top"><h1>設定</h1></header>
+  <div class="profile"><div class="avatar">hy</div><div><b>hy.kim</b><span>制作者・PL-900 ドリル v2.0</span></div></div>
+
+  <h2>表示</h2>
+  <div class="group">
+    <div class="item"><span class="lbl">画面モード<small>ライト / ダーク / 端末に合わせる</small></span>${seg("theme",[["light","ライト"],["dark","ダーク"],["system","自動"]],st.theme)}</div>
+    <div class="item"><span class="lbl">文字サイズ</span>${seg("fs",[["s","小"],["m","標準"],["l","大"],["xl","特大"]],st.fs)}</div>
+  </div>
+
+  <h2>学習</h2>
+  <div class="group">
+    <div class="item"><span class="lbl">1日の目標<small>今日の進捗カードに表示</small></span>${seg("goal",[[5,"5"],[10,"10"],[20,"20"],[30,"30"]],st.goal)}</div>
+    <div class="item"><span class="lbl">ランダム出題の問題数</span>${seg("count",[[5,"5"],[10,"10"],[20,"20"]],st.count)}</div>
+    <div class="item"><label for="sw-shuffle">選択肢の順番を毎回入れ替える<small>位置で答えを覚えてしまうのを防ぎます</small></label><input type="checkbox" class="switch" id="sw-shuffle" ${st.shuffle?"checked":""}></div>
+    <div class="item"><label for="exam-date">試験日<small>試験までの残り日数を表示します</small></label><input type="date" id="exam-date" value="${esc(st.exam)}"></div>
+  </div>
+
+  <h2>データ</h2>
+  <div class="group">
+    <div class="item" style="display:block">
+      <span class="lbl">学習記録のバックアップ<small>機種変更やブラウザーを変えるときに、下のコードをコピーして保存しておき、新しい端末で貼り付けて復元します。</small></span>
+      <textarea id="backup" spellcheck="false" aria-label="バックアップ コード"></textarea>
+      <div class="actions" style="margin-top:8px"><button class="btn" id="copy">コピー</button><button class="btn" id="restore">貼り付けた内容で復元</button></div>
+      <div class="msg" id="msg"></div>
+    </div>
+    <div class="item"><span class="lbl">ブックマークをすべて解除<small>${marked().length} 問</small></span><button class="icon-btn" id="clrmark">解除</button></div>
+    <div class="item"><span class="lbl">学習記録をすべて消去<small>正誤・読了・連続日数・ブックマーク</small></span><button class="icon-btn" id="reset" style="color:var(--ng);border-color:var(--ng)">消去</button></div>
+  </div>
+  <div id="confirm"></div>
+
+  <h2>このアプリについて</h2>
+  <div class="group">
+    <div class="item"><span class="lbl">制作者</span><span>hy.kim</span></div>
+    <div class="item"><span class="lbl">バージョン</span><span>2.0</span></div>
+    <div class="item"><span class="lbl">収録</span><span>問題 ${Q.length} 問・要点 ${Object.values(STUDY).flat().length} 項目</span></div>
+    <div class="item"><span class="lbl">出題範囲の基準</span><span>2026年7月24日 改訂版</span></div>
+    <div class="item"><a class="link" href="https://learn.microsoft.com/ja-jp/credentials/certifications/resources/study-guides/pl-900" target="_blank" rel="noopener">公式 PL-900 学習ガイド ↗</a></div>
+    <div class="item"><a class="link" href="https://learn.microsoft.com/ja-jp/credentials/certifications/power-platform-fundamentals/" target="_blank" rel="noopener">試験の予約・認定情報 ↗</a></div>
+  </div>
+  <p class="note">個人学習用の非公式アプリです。Microsoft とは関係ありません。学習記録はこの端末のブラウザーにだけ保存されます。</p>`;
+
+  // 세그먼트 버튼 (테마·글자크기·목표·문제 수)
+  document.querySelectorAll("[data-seg]").forEach(g=>g.querySelectorAll("button").forEach(b=>b.onclick=()=>{
+    const k=g.dataset.seg, v=b.dataset.v; st[k]=(k==="goal"||k==="count")?+v:v; save(); applySettings();
+    g.querySelectorAll("button").forEach(x=>x.classList.toggle("on",x===b));
+  }));
+  $("#sw-shuffle").onchange=e=>{st.shuffle=e.target.checked;save()};
+  $("#exam-date").onchange=e=>{st.exam=e.target.value;save()};
+  // 백업: 기록을 문자열로 보여주고 복사
+  const ta=$("#backup"), msg=t=>$("#msg").textContent=t;
+  ta.value=JSON.stringify(S);
+  $("#copy").onclick=()=>{
+    const fb=()=>{ta.focus();ta.select();msg("選択しました。長押しでコピーしてください。")};
+    try{navigator.clipboard.writeText(ta.value).then(()=>msg("コピーしました。メモ帳などに保存してください。"),fb)}catch(e){fb()}
+  };
+  $("#restore").onclick=()=>{
+    try{const o=JSON.parse(ta.value);if(!o||typeof o!=="object"||!o.stats)throw 0;S=merge(o);save();applySettings();settings();$("#msg").textContent="復元しました。"}
+    catch(e){msg("コードを読み取れませんでした。コピーした内容をすべて貼り付けてください。")}
+  };
+  $("#clrmark").onclick=()=>{S.marks={};save();settings()};
+  $("#reset").onclick=()=>{ // 페이지 안에서 확인 (confirm() 사용 불가)
+    $("#confirm").innerHTML=`<div class="confirm">学習記録をすべて消去します。元に戻せません。設定はそのまま残ります。
+      <div class="actions"><button class="btn" id="no">やめる</button><button class="btn" id="yes" style="color:var(--ng)">消去する</button></div></div>`;
+    $("#no").onclick=()=>$("#confirm").innerHTML="";
+    $("#yes").onclick=()=>{S=merge({set:S.set});save();settings()};
+  };
+}
+
+applySettings();
+go("study");
+</script>
+
+</html>
