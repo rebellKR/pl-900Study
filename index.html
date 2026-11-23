@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}:root{padding-top:env(safe-area-inset-top,0px)}</style>
 <title>PL-900 ドリル</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -26,6 +26,10 @@
   --accent:#a593ff; --accent-soft:#2a2550; --on-accent:#14112b; --ok:#4fd1a0; --ok-soft:#163a2e; --ng:#ff8091; --ng-soft:#40202a; --warn:#f0b54a; --warn-soft:#3a2d14; color-scheme:dark}
 :root[data-theme="light"]{color-scheme:light}
 *{box-sizing:border-box}
+/* 더블탭 확대 방지 (두 손가락 확대는 유지) + 탭할 때 회색 번쩍임 제거 */
+html,body,button,a,input,label,.flip{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+/* 아이폰은 글자 16px 미만 입력칸을 누르면 자동 확대하므로 16px로 맞춤 */
+input,select,textarea{font-size:16px!important}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:var(--fs);line-height:1.75;-webkit-text-size-adjust:100%}
 .wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 calc(96px + env(safe-area-inset-bottom,0px))}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
