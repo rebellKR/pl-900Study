@@ -2,7 +2,7 @@
 
 PL-900 (Microsoft Power Platform Fundamentals) を日本語で学習するためのスマホ向け Web アプリです。
 
-- 学習: 分野別の要点まとめ(Microsoft Learn ベース)
+- 学習: Microsoft Learn をもとにした解説 29 単元(目次サイドバー付き)
 - 問題: 練習問題 52 問(解説・補足付き)
 - 設定: ライト/ダーク、文字サイズ、試験日カウントダウン、記録のバックアップ
 
